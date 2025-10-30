@@ -1,253 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌿 생태환경 퀴즈</title>
-  <style>
-    body {
-      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-      background: linear-gradient(135deg, #b2f2bb, #d0ebff);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 생태환경 퀴즈</title>
+<style>
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-    .quiz-container {
-      background: #fff;
-      width: 100%;
-      max-width: 480px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      animation: fadeIn 0.8s ease;
-    }
+  .quiz-container {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+  h1 {
+    color: #388e3c;
+    margin-bottom: 20px;
+  }
 
-    .quiz-header {
-      background: #37b24d;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+  .question {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
 
-    h1 {
-      font-size: 1.6rem;
-      margin: 0;
-    }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .quiz-body {
-      padding: 25px;
-    }
+  .option {
+    background: #f1f8e9;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
 
-    .question {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
+  .option:hover {
+    background: #c8e6c9;
+  }
 
-    .options {
-      list-style: none;
-      padding: 0;
-    }
+  .option.correct {
+    background: #81c784;
+    border-color: #388e3c;
+    color: white;
+  }
 
-    .options li {
-      background: #f1f3f5;
-      margin-bottom: 10px;
-      padding: 12px 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+  .option.incorrect {
+    background: #e57373;
+    border-color: #c62828;
+    color: white;
+  }
 
-    .options li:hover {
-      background: #d8f5a2;
-    }
+  #next-btn {
+    margin-top: 20px;
+    background: #388e3c;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+  }
 
-    .btn {
-      display: block;
-      width: 100%;
-      margin-top: 15px;
-      background: #228be6;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+  #next-btn:hover {
+    background: #2e7d32;
+  }
 
-    .btn:disabled {
-      background: #ced4da;
-      cursor: not-allowed;
-    }
+  #score {
+    font-size: 1.3em;
+    margin-top: 20px;
+    color: #2e7d32;
+  }
 
-    .btn:hover:not(:disabled) {
-      background: #1c7ed6;
-    }
-
-    .result {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-top: 20px;
-    }
-
-    .restart {
-      background: #40c057;
-      margin-top: 15px;
-    }
-
-    .restart:hover {
-      background: #37b24d;
-    }
-  </style>
+  footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #555;
+  }
+</style>
 </head>
 <body>
   <div class="quiz-container">
-    <div class="quiz-header">
-      <h1>🌿 생태환경 퀴즈</h1>
-    </div>
-    <div class="quiz-body">
-      <div id="quiz">
-        <p class="question" id="question"></p>
-        <ul class="options" id="options"></ul>
-        <button class="btn" id="nextBtn" disabled>다음</button>
-      </div>
-      <div id="result" class="result" style="display:none;"></div>
-      <button class="btn restart" id="restartBtn" style="display:none;">다시 시작하기</button>
+    <h1>🌍 생태환경 퀴즈</h1>
+    <div id="quiz">
+      <div class="question" id="question">문제가 여기에 표시됩니다.</div>
+      <div class="options" id="options"></div>
+      <button id="next-btn">다음 문제</button>
+      <div id="score"></div>
     </div>
   </div>
 
   <script>
     const quizData = [
       {
-        question: "1. 지구 온난화의 주요 원인은 무엇일까요?",
-        options: ["오존층 증가", "이산화탄소 등 온실가스 배출", "해류의 변화", "산림 면적 증가"],
+        question: "지구 온난화의 주요 원인은 무엇일까요?",
+        options: ["오존층 파괴", "이산화탄소 증가", "태양 흑점 폭발", "바다 염도 변화"],
         answer: 1
       },
       {
-        question: "2. 일회용 플라스틱을 줄이기 위한 올바른 방법은?",
-        options: ["비닐봉투 사용", "텀블러 사용", "플라스틱 빨대 사용", "포장용기 늘리기"],
+        question: "플라스틱 쓰레기 문제를 줄이기 위한 가장 좋은 방법은?",
+        options: ["소각하기", "분리배출하기", "바다에 버리기", "묻기"],
         answer: 1
       },
       {
-        question: "3. 탄소중립의 목표는?",
-        options: ["탄소 배출량 증가", "탄소 배출량 제로", "탄소 배출 무관심", "탄소 배출 무제한"],
-        answer: 1
-      },
-      {
-        question: "4. 쓰레기 분리수거의 올바른 방법은?",
-        options: ["모든 쓰레기 한 봉투에 버리기", "재활용품 따로 분리", "음식물 일반쓰레기로", "유리와 플라스틱 함께 버리기"],
-        answer: 1
-      },
-      {
-        question: "5. 환경 보호를 위한 행동이 아닌 것은?",
-        options: ["대중교통 이용", "전기 절약", "물 낭비", "재활용"],
+        question: "‘탄소중립’이란 무엇을 의미할까요?",
+        options: ["탄소 배출을 늘리는 것", "탄소 배출을 0으로 만드는 것", "탄소 배출과 흡수를 같게 하는 것", "탄소세를 내는 것"],
         answer: 2
       },
       {
-        question: "6. 숲이 파괴되면 가장 큰 영향을 받는 것은?",
-        options: ["산업 구조", "도시 인프라", "생태계", "금융 시장"],
+        question: "멸종 위기 동물을 보호하기 위한 방법이 아닌 것은?",
+        options: ["서식지 보전", "불법 포획 금지", "야생동물 사냥", "보호구역 지정"],
         answer: 2
       },
       {
-        question: "7. 바다의 미세플라스틱은 주로 어디에서 발생하나요?",
-        options: ["자연 침식", "플라스틱 쓰레기 분해", "화산 폭발", "해류 온도 차이"],
+        question: "다음 중 재생 에너지가 아닌 것은?",
+        options: ["태양광", "풍력", "석탄", "지열"],
+        answer: 2
+      },
+      {
+        question: "‘리사이클링(Recycling)’의 뜻은?",
+        options: ["다시 사용하기", "다시 만들기", "다시 팔기", "다시 버리기"],
         answer: 1
       },
       {
-        question: "8. 재생 가능 에너지가 아닌 것은?",
-        options: ["태양열", "풍력", "석탄", "수력"],
+        question: "바다를 오염시키는 주된 원인 중 하나는?",
+        options: ["산림 벌목", "농약 사용", "플라스틱 쓰레기", "대기 오염"],
         answer: 2
       },
       {
-        question: "9. 나무를 심는 이유로 옳은 것은?",
-        options: ["산소 발생", "이산화탄소 흡수", "기온 완화", "모두 해당"],
+        question: "지구의 평균 기온이 상승하면 어떤 현상이 나타날까요?",
+        options: ["빙하 감소", "해수면 상승", "기상이변 증가", "모두 해당"],
         answer: 3
       },
       {
-        question: "10. 우리가 환경을 위해 실천할 수 있는 일은?",
-        options: ["쓰레기 줄이기", "에너지 절약", "친환경 제품 사용", "모두 해당"],
+        question: "종이 절약을 위해 가장 좋은 방법은?",
+        options: ["이면지 사용", "더 많은 인쇄", "새 종이만 사용", "신문지 버리기"],
+        answer: 0
+      },
+      {
+        question: "다음 중 ‘친환경 교통수단’이 아닌 것은?",
+        options: ["자전거", "전기차", "지하철", "휘발유 자동차"],
         answer: 3
       }
     ];
 
-    let currentQuiz = 0;
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const scoreEl = document.getElementById('score');
+
+    let currentQuestion = 0;
     let score = 0;
+    let answered = false;
 
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const nextBtn = document.getElementById("nextBtn");
-    const resultEl = document.getElementById("result");
-    const restartBtn = document.getElementById("restartBtn");
-
-    function loadQuiz() {
-      nextBtn.disabled = true;
-      const currentData = quizData[currentQuiz];
-      questionEl.textContent = currentData.question;
+    function loadQuestion() {
+      answered = false;
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
       optionsEl.innerHTML = "";
-      currentData.options.forEach((option, index) => {
-        const li = document.createElement("li");
-        li.textContent = option;
-        li.addEventListener("click", () => selectOption(li, index));
-        optionsEl.appendChild(li);
+      scoreEl.textContent = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.textContent = opt;
+        btn.addEventListener("click", () => selectOption(i, btn));
+        optionsEl.appendChild(btn);
       });
+
+      nextBtn.style.display = "none";
     }
 
-    function selectOption(selectedLi, selectedIndex) {
-      const correctIndex = quizData[currentQuiz].answer;
-      const allOptions = optionsEl.querySelectorAll("li");
-      allOptions.forEach((opt, i) => {
-        opt.style.pointerEvents = "none";
-        if (i === correctIndex) opt.style.background = "#a9e34b";
-        if (i === selectedIndex && i !== correctIndex)
-          opt.style.background = "#ff8787";
+    function selectOption(i, btn) {
+      if (answered) return;
+      answered = true;
+      const correct = quizData[currentQuestion].answer;
+
+      const optionButtons = document.querySelectorAll('.option');
+      optionButtons.forEach((b, index) => {
+        if (index === correct) b.classList.add("correct");
+        else if (index === i) b.classList.add("incorrect");
       });
-      if (selectedIndex === correctIndex) score++;
-      nextBtn.disabled = false;
+
+      if (i === correct) score++;
+
+      nextBtn.style.display = "inline-block";
     }
 
     nextBtn.addEventListener("click", () => {
-      if (currentQuiz < quizData.length - 1) {
-        currentQuiz++;
-        loadQuiz();
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
       } else {
-        showResult();
+        showScore();
       }
     });
 
-    function showResult() {
-      document.getElementById("quiz").style.display = "none";
-      resultEl.style.display = "block";
-      restartBtn.style.display = "block";
-      resultEl.innerHTML = `당신의 점수는 <strong>${score} / ${quizData.length}</strong> 입니다 🌍`;
+    function showScore() {
+      questionEl.textContent = "퀴즈 완료!";
+      optionsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      scoreEl.innerHTML = `✅ 당신의 점수는 <strong>${score} / ${quizData.length}</strong> 입니다!`;
     }
 
-    restartBtn.addEventListener("click", () => {
-      currentQuiz = 0;
-      score = 0;
-      resultEl.style.display = "none";
-      restartBtn.style.display = "none";
-      document.getElementById("quiz").style.display = "block";
-      loadQuiz();
-    });
-
-    loadQuiz();
+    loadQuestion();
   </script>
+
+  <footer>© 2025 생태환경 퀴즈 | 지속 가능한 지구를 위해 🌱</footer>
 </body>
 </html>
