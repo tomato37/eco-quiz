@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>생태환경 퀴즈</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌿 생태환경 퀴즈</title>
   <style>
     body {
       font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
@@ -19,7 +19,7 @@
     .quiz-container {
       background: #fff;
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       overflow: hidden;
@@ -27,8 +27,14 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .quiz-header {
@@ -38,13 +44,13 @@
       padding: 20px;
     }
 
-    .quiz-body {
-      padding: 25px;
-    }
-
     h1 {
       font-size: 1.6rem;
       margin: 0;
+    }
+
+    .quiz-body {
+      padding: 25px;
     }
 
     .question {
@@ -85,7 +91,12 @@
       transition: background 0.2s ease;
     }
 
-    .btn:hover {
+    .btn:disabled {
+      background: #ced4da;
+      cursor: not-allowed;
+    }
+
+    .btn:hover:not(:disabled) {
       background: #1c7ed6;
     }
 
@@ -115,7 +126,7 @@
       <div id="quiz">
         <p class="question" id="question"></p>
         <ul class="options" id="options"></ul>
-        <button class="btn" id="nextBtn">다음</button>
+        <button class="btn" id="nextBtn" disabled>다음</button>
       </div>
       <div id="result" class="result" style="display:none;"></div>
       <button class="btn restart" id="restartBtn" style="display:none;">다시 시작하기</button>
@@ -125,12 +136,12 @@
   <script>
     const quizData = [
       {
-        question: "1. 지구 온난화의 주요 원인으로 옳은 것은?",
-        options: ["오존층 증가", "이산화탄소 등 온실가스 배출", "해류의 흐름 변화", "산림 면적 증가"],
+        question: "1. 지구 온난화의 주요 원인은 무엇일까요?",
+        options: ["오존층 증가", "이산화탄소 등 온실가스 배출", "해류의 변화", "산림 면적 증가"],
         answer: 1
       },
       {
-        question: "2. 일회용 플라스틱 사용을 줄이기 위한 방법으로 옳은 것은?",
+        question: "2. 일회용 플라스틱을 줄이기 위한 올바른 방법은?",
         options: ["비닐봉투 사용", "텀블러 사용", "플라스틱 빨대 사용", "포장용기 늘리기"],
         answer: 1
       },
@@ -141,22 +152,22 @@
       },
       {
         question: "4. 쓰레기 분리수거의 올바른 방법은?",
-        options: ["모든 쓰레기 한 봉투에 버리기", "재활용품 따로 분리", "음식물 쓰레기 일반쓰레기로", "유리와 플라스틱 함께 버리기"],
+        options: ["모든 쓰레기 한 봉투에 버리기", "재활용품 따로 분리", "음식물 일반쓰레기로", "유리와 플라스틱 함께 버리기"],
         answer: 1
       },
       {
-        question: "5. 환경 보호를 위한 개인의 실천이 아닌 것은?",
+        question: "5. 환경 보호를 위한 행동이 아닌 것은?",
         options: ["대중교통 이용", "전기 절약", "물 낭비", "재활용"],
         answer: 2
       },
       {
-        question: "6. 숲이 파괴되면 가장 직접적으로 영향을 받는 것은?",
+        question: "6. 숲이 파괴되면 가장 큰 영향을 받는 것은?",
         options: ["산업 구조", "도시 인프라", "생태계", "금융 시장"],
         answer: 2
       },
       {
         question: "7. 바다의 미세플라스틱은 주로 어디에서 발생하나요?",
-        options: ["자연 침식", "플라스틱 쓰레기 분해", "화산 폭발", "해류의 온도 차이"],
+        options: ["자연 침식", "플라스틱 쓰레기 분해", "화산 폭발", "해류 온도 차이"],
         answer: 1
       },
       {
@@ -165,12 +176,12 @@
         answer: 2
       },
       {
-        question: "9. 나무를 심는 것이 도움이 되는 이유는?",
+        question: "9. 나무를 심는 이유로 옳은 것은?",
         options: ["산소 발생", "이산화탄소 흡수", "기온 완화", "모두 해당"],
         answer: 3
       },
       {
-        question: "10. 지구의 환경 문제를 해결하기 위해 우리가 할 수 있는 일은?",
+        question: "10. 우리가 환경을 위해 실천할 수 있는 일은?",
         options: ["쓰레기 줄이기", "에너지 절약", "친환경 제품 사용", "모두 해당"],
         answer: 3
       }
@@ -178,36 +189,40 @@
 
     let currentQuiz = 0;
     let score = 0;
-    const questionEl = document.getElementById('question');
-    const optionsEl = document.getElementById('options');
-    const nextBtn = document.getElementById('nextBtn');
-    const resultEl = document.getElementById('result');
-    const restartBtn = document.getElementById('restartBtn');
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultEl = document.getElementById("result");
+    const restartBtn = document.getElementById("restartBtn");
 
     function loadQuiz() {
+      nextBtn.disabled = true;
       const currentData = quizData[currentQuiz];
       questionEl.textContent = currentData.question;
-      optionsEl.innerHTML = '';
+      optionsEl.innerHTML = "";
       currentData.options.forEach((option, index) => {
-        const li = document.createElement('li');
+        const li = document.createElement("li");
         li.textContent = option;
-        li.addEventListener('click', () => selectOption(index));
+        li.addEventListener("click", () => selectOption(li, index));
         optionsEl.appendChild(li);
       });
     }
 
-    function selectOption(selectedIndex) {
+    function selectOption(selectedLi, selectedIndex) {
       const correctIndex = quizData[currentQuiz].answer;
-      const allOptions = optionsEl.querySelectorAll('li');
+      const allOptions = optionsEl.querySelectorAll("li");
       allOptions.forEach((opt, i) => {
-        opt.style.pointerEvents = 'none';
-        if (i === correctIndex) opt.style.background = '#a9e34b';
-        if (i === selectedIndex && i !== correctIndex) opt.style.background = '#ff8787';
+        opt.style.pointerEvents = "none";
+        if (i === correctIndex) opt.style.background = "#a9e34b";
+        if (i === selectedIndex && i !== correctIndex)
+          opt.style.background = "#ff8787";
       });
       if (selectedIndex === correctIndex) score++;
+      nextBtn.disabled = false;
     }
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener("click", () => {
       if (currentQuiz < quizData.length - 1) {
         currentQuiz++;
         loadQuiz();
@@ -217,18 +232,18 @@
     });
 
     function showResult() {
-      document.getElementById('quiz').style.display = 'none';
-      resultEl.style.display = 'block';
-      restartBtn.style.display = 'block';
+      document.getElementById("quiz").style.display = "none";
+      resultEl.style.display = "block";
+      restartBtn.style.display = "block";
       resultEl.innerHTML = `당신의 점수는 <strong>${score} / ${quizData.length}</strong> 입니다 🌍`;
     }
 
-    restartBtn.addEventListener('click', () => {
+    restartBtn.addEventListener("click", () => {
       currentQuiz = 0;
       score = 0;
-      resultEl.style.display = 'none';
-      restartBtn.style.display = 'none';
-      document.getElementById('quiz').style.display = 'block';
+      resultEl.style.display = "none";
+      restartBtn.style.display = "none";
+      document.getElementById("quiz").style.display = "block";
       loadQuiz();
     });
 
